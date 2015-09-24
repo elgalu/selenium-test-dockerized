@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# Fix IP if it is docker-selenium linked container
+if [ "${SEL_PORT_22222_TCP_ADDR}" != "" ]; then
+  export SEL_HOST=${SEL_PORT_22222_TCP_ADDR}
+fi
+
+exec python /root/selenium-test/hola.py
