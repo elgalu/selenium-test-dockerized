@@ -32,7 +32,7 @@ install:
   - docker exec myselenium errors || true
 
 script:
-  - docker run --rm -ti --name=mytest --net=container:myselenium elgalu/selenium-test:local
+  - docker run --rm -ti --name=mytest --link myselenium:sel elgalu/selenium-test
 
 after_script:
   - docker stop myselenium
