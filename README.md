@@ -1,4 +1,4 @@
-# selenium-test-dockerized
+# selenium-test-dockerized [![Build Status](https://travis-ci.org/elgalu/selenium-test-dockerized.svg?branch=master)](https://travis-ci.org/elgalu/selenium-test-dockerized)
 This docker image builds some basics tests by cloning [elgalu/selenium-test][] inside the container.
 
 ## Usage

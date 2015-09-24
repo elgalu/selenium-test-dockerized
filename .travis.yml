@@ -1,0 +1,39 @@
+sudo: required
+
+language: python
+python:
+  - "3.5"
+
+# TODO: add these steps to
+#   https://github.com/travis-ci/docs-travis-ci-com/blob/gh-pages/user/gui-and-headless-browsers.md
+#   http://docs.travis-ci.com/user/gui-and-headless-browsers/
+services:
+  - docker
+
+env:
+  - SEL_IMG_TAG=latest
+
+# When I try to map ports `-p ${SEL_PORT}:${SEL_PORT}` I get
+#   Error response from daemon: Cannot start container 9da9d7a1176: iptables
+#   failed: iptables --wait -t filter -A DOCKER ! -i docker0 -o docker0
+#   -p tcp -d 172.17.0.1 --dport 24444 -j ACCEPT:
+#   iptables: No chain/target/match by that name. (exit status 1)
+# To avoid `Unable to locate package jq` 1st is necessary to `apt-get update`
+before_install:
+  - docker build -t="elgalu/selenium-test:local" .
+  - docker pull elgalu/selenium:${SEL_IMG_TAG}
+
+install:
+  - docker run --name=myselenium -d elgalu/selenium:${SEL_IMG_TAG}
+  - sleep 1
+  - docker logs myselenium
+  - docker exec myselenium errors || true
+  - docker exec myselenium wait_all_done 15s || true
+  - docker exec myselenium errors || true
+
+script:
+  - docker run --rm -ti --name=mytest --net=container:myselenium elgalu/selenium-test:local
+
+after_script:
+  - docker stop myselenium
+  - docker rm myselenium
