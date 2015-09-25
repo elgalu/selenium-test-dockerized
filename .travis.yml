@@ -24,15 +24,16 @@ before_install:
   - docker pull elgalu/selenium:${SEL_IMG_TAG}
 
 install:
-  - docker run --name=myselenium -d elgalu/selenium:${SEL_IMG_TAG}
+  - docker run --name=myselenium -d -e MAX_INSTANCES=9 -e MAX_SESSIONS=9 elgalu/selenium:${SEL_IMG_TAG}
   - sleep 1
   - docker logs myselenium
   - docker exec myselenium errors || true
   - docker exec myselenium wait_all_done 15s || true
   - docker exec myselenium errors || true
 
+# If we try to use `--net` it failed with System error: permission denied
 script:
-  - docker run --rm -ti --name=mytest --link myselenium:sel elgalu/selenium-test
+  - docker run --rm -ti --name=mytest --link myselenium:sel elgalu/selenium-test:local
 
 after_script:
   - docker stop myselenium
