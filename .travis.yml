@@ -25,13 +25,13 @@ before_install:
 
 install:
   - docker run --name=myselenium -d -e MAX_INSTANCES=9 -e MAX_SESSIONS=9 elgalu/selenium:${SEL_IMG_TAG}
-  - sleep 1
-  - docker logs myselenium
-  - docker exec myselenium errors || true
   - docker exec myselenium wait_all_done 15s || true
   - docker exec myselenium errors || true
+  - docker logs myselenium
 
-# If we try to use `--net` it failed with System error: permission denied
+# If we try to use `--net` Travis fails with System error: permission denied
+# If we try to use `--link` Selenium fails with ConnectionRefusedError after
+#  connect to selenium at http://172.17.0.4:24444/wd/hub
 script:
   - docker run --rm -ti --name=mytest --link myselenium:sel elgalu/selenium-test:local
 
