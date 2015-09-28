@@ -36,6 +36,9 @@ Each pushed docker image relates to a specific commit at [elgalu/selenium-test][
 * selenium-test commit: `99c2b9f6e45c9293803c29e21a55d7554d7f7bc5`
   docker-digest:`sha256:82baaf2ccc84ef8c638df6e13249497604b738f4984bdb53344ab31501a5693c`
 
+* selenium-test commit: `9029b2589459db837a3052bdfb3ddfdbed4cb6b6`
+  docker-digest:`sha256:82baaf2ccc84ef8c638df6e13249497604b738f4984bdb53344ab31501a5693c`
+
 
 [elgalu/selenium-test]: https://github.com/elgalu/selenium-test
 [docker-selenium]: https://github.com/elgalu/docker-selenium
