@@ -23,8 +23,10 @@ before_install:
   - docker build -t="elgalu/selenium-test:${SEL_TEST_IMG_TAG}" .
   - docker pull elgalu/selenium:${SEL_IMG_TAG}
 
+# If we don't increase MAX_INSTANCES and MAX_SESSIONS we get
+#   Error forwarding the new session Empty pool of VM for setup Capabilities
 install:
-  - docker run --privileged --name=myselenium -d elgalu/selenium:${SEL_IMG_TAG}
+  - docker run --privileged --name=myselenium -d -e MAX_INSTANCES=9 -e MAX_SESSIONS=9 elgalu/selenium:${SEL_IMG_TAG}
   - docker exec myselenium wait_all_done 15s || true
   - docker exec myselenium errors || true
   - docker logs myselenium
