@@ -11,7 +11,7 @@ services:
   - docker
 
 env:
-  - SEL_IMG_TAG=latest
+  - SEL_IMG_TAG=latest SEL_TEST_IMG_TAG=local
 
 # When I try to map ports `-p ${SEL_PORT}:${SEL_PORT}` I get
 #   Error response from daemon: Cannot start container 9da9d7a1176: iptables
@@ -20,7 +20,7 @@ env:
 #   iptables: No chain/target/match by that name. (exit status 1)
 # To avoid `Unable to locate package jq` 1st is necessary to `apt-get update`
 before_install:
-  - docker build -t="elgalu/selenium-test:local" .
+  - docker build -t="elgalu/selenium-test:${SEL_TEST_IMG_TAG}" .
   - docker pull elgalu/selenium:${SEL_IMG_TAG}
 
 install:
@@ -34,7 +34,7 @@ install:
 #  connect to selenium at http://172.17.0.4:24444/wd/hub
 # Unless, we use `--privileged` trick by Hiro Asari from Travis Corp.
 script:
-  - docker run --privileged --rm -ti --name=mytest --link myselenium:sel elgalu/selenium-test:local
+  - docker run --privileged --rm -ti --name=mytest --link myselenium:sel elgalu/selenium-test:${SEL_TEST_IMG_TAG}
 
 after_script:
   - docker stop myselenium
