@@ -26,8 +26,8 @@ before_install:
 # If we don't increase MAX_INSTANCES and MAX_SESSIONS we get
 #   Error forwarding the new session Empty pool of VM for setup Capabilities
 install:
-  - docker run --privileged --name=myselenium -d -e VIDEO=true elgalu/selenium:${SEL_IMG_TAG}
-  - docker exec myselenium wait_all_done 15s || true
+  - docker run --privileged --name=myselenium -d -e WAIT_TIMEOUT=20s -e VIDEO=true elgalu/selenium:${SEL_IMG_TAG}
+  - docker exec myselenium wait_all_done 40s || true
   - docker exec myselenium errors || true
   - docker logs myselenium
 
