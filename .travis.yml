@@ -24,7 +24,7 @@ before_install:
   - docker pull elgalu/selenium:${SEL_IMG_TAG}
 
 install:
-  - docker run --privileged --name=myselenium -d -e MAX_INSTANCES=9 -e MAX_SESSIONS=9 elgalu/selenium:${SEL_IMG_TAG}
+  - docker run --privileged --name=myselenium -d elgalu/selenium:${SEL_IMG_TAG}
   - docker exec myselenium wait_all_done 15s || true
   - docker exec myselenium errors || true
   - docker logs myselenium
@@ -32,6 +32,7 @@ install:
 # If we try to use `--net` Travis fails with System error: permission denied
 # If we try to use `--link` Selenium fails with ConnectionRefusedError after
 #  connect to selenium at http://172.17.0.4:24444/wd/hub
+# Unless, we use `--privileged` trick by Hiro Asari from Travis Corp.
 script:
   - docker run --privileged --rm -ti --name=mytest --link myselenium:sel elgalu/selenium-test:local
 
