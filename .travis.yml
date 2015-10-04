@@ -10,6 +10,12 @@ python:
 services:
   - docker
 
+addons:
+  apt:
+    # sources:
+    #   - chef-current-precise
+    packages:
+      - jq
 env:
   - SEL_IMG_TAG=latest SEL_TEST_IMG_TAG=local
 
